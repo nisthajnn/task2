@@ -1,0 +1,243 @@
+<html>
+  <head>
+    <style>
+      .container {
+        /* display: flex;
+        flex-direction: column;
+        align-items: center; */
+        margin: 20px;
+      }
+
+      .title {
+        font-size: 60px;
+        font-weight: bold;
+        color: rgb(42, 54, 165);
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .products {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 10px;
+      }
+
+      .product {
+        width: 200px;
+        height: 250px;
+        margin: 10px;
+        border: 1px solid black;
+        border-radius: 10px;
+        box-shadow: 2px 2px 5px grey;
+      }
+
+      .product img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+
+      .product h3 {
+        text-align: center;
+        margin: 5px;
+      }
+
+      .product p {
+        text-align: center;
+        margin: 5px;
+        color: rgb(0, 23, 128);
+        font-size: 25px;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .product input {
+        display: block;
+        width: 50px;
+        margin: 0 auto;
+      }
+
+      .summary {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px;
+      }
+
+      .summary h2 {
+        font-size: 20px;
+        font-weight: bold;
+        color: rgb(65, 42, 165);
+      }
+
+      .summary ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .summary li span {
+        font-weight: bold;
+      }
+
+      .summary p {
+        font-size: 18px;
+        font-weight: bold;
+        color: rgb(0, 9, 128);
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .summary button {
+        width: 200px;
+        height: 80px;
+        border: none;
+        border-radius: 10px;
+        background-color: rgb(69, 42, 165);
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      #as
+      {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 30px;
+      }
+    </style>
+    <title>Task 2</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="title">
+        Chocolate Customization Platform</div>
+      <p id="as">Incorporate arrow functionality within the input field to facilitate quantity adjustments</p>
+      <div class="products">
+        <div class="product" data-name="Dark Chocolate" data-price="50">
+          <img
+            src="assests/kier-in-sight-archives-LjzAqkZnGFM-unsplash.jpg"
+            alt="Dark Chocolate"
+          />
+          <h3>Dark Chocolate</h3>
+          <p>₹50</p>
+          <input
+            type="number"
+            min="0"
+            max="8"
+            value="0"
+            onkeydown="return false"
+            onchange="updateSummary()"
+          />
+        </div>
+        <div class="product" data-name="Milk Chocolate" data-price="40">
+          <img
+            src="assests/michele-blackwell-evRB-x0TJkM-unsplash.jpg"
+            alt="Milk Chocolate"
+          />
+          <h3>Waffle Chocolate</h3>
+          <p>₹40</p>
+          <input
+            type="number"
+            min="0"
+            max="8"
+            value="0"
+            onkeydown="return false"
+            onchange="updateSummary()"
+          />
+        </div>
+        <div class="product" data-name="White Chocolate" data-price="60">
+          <img
+            src="assests/pablo-merchan-montes-SCbq6uKCyMY-unsplash.jpg"
+            alt="White Chocolate"
+          />
+          <h3>Jelly Chocolate</h3>
+          <p>₹60</p>
+          <input
+            type="number"
+            min="0"
+            max="8"
+            value="0"
+            onkeydown="return false"
+            onchange="updateSummary()"
+          />
+        </div>
+        <div class="product" data-name="Fruit Chocolate" data-price="70">
+          <img
+            src="assests/pushpak-dsilva-r-hQw_obFd0-unsplash.jpg"
+            alt="Fruit Chocolate"
+          />
+          <h3>Fruit Chocolate</h3>
+          <p>₹70</p>
+          <input
+            type="number"
+            min="0"
+            max="8"
+            value="0"
+            onkeydown="return false"
+            onchange="updateSummary()"
+          />
+        </div>
+      </div>
+      <div class="summary">
+        <h2>Your Custom Pack</h2>
+        <ul id="summary-items">
+        </ul>
+        <p id="summary-total">Total: ₹0</p>
+        <button id="summary-button" onclick="placeOrder()">Place Order</button>
+      </div>
+    </div>
+    <script>
+      const summaryItems = document.getElementById("summary-items");
+      const summaryTotal = document.getElementById("summary-total");
+      const summaryButton = document.getElementById("summary-button");
+      let totalQuant;
+
+      function updateSummary() {
+        
+        const products = document.getElementsByClassName("product");
+
+        let items = 0;
+        let total = 0;
+
+        for (let product of products) {
+          let name = product.dataset.name;
+          let price = parseInt(product.dataset.price);
+          let quantity = parseInt(product.querySelector("input").value);
+
+          items += quantity;
+          total += price * quantity;
+        }
+        totalQuant = items;
+        if(totalQuant > 8){
+            alert("The total number of items in the custom pack should not exceed 8")
+            return;
+        }
+        summaryItems.innerHTML = "";
+
+        for (let product of products) {
+          let name = product.dataset.name;
+          let quantity = parseInt(product.querySelector("input").value);
+
+          if (quantity > 0) {
+            let summaryItem = document.createElement("li");
+
+            summaryItem.innerHTML = `<span>${name}</span> x ${quantity}`;
+
+            summaryItems.appendChild(summaryItem);
+          }
+        }
+
+        summaryTotal.innerHTML = `Total: ₹${total}`;
+
+        if (items == 8) {
+          summaryButton.disabled = false;
+        } else {
+          summaryButton.disabled = true;
+        }
+      }
+
+      function placeOrder() {
+        alert("Your order has been placed successfully!");
+      }
+    </script>
+  </body>
+</html>
